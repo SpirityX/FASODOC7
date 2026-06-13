@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2C3A63">
+<meta name="description" content="FasoDoc — bibliothèque numérique éducative pour les élèves du Burkina Faso.">
+<title>FasoDoc — Le savoir à portée de tous</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Aller au contenu principal</a>
+
+<!-- Splash -->
+<div id="splash" class="splash" aria-hidden="true">
+  <div class="splash-mark">
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+  </div>
+  <p class="splash-title">FasoDoc</p>
+  <p class="splash-sub">Le savoir à portée de tous</p>
+  <div class="splash-bar"><span></span></div>
+</div>
+
+<div id="pageLoader" class="page-loader" aria-hidden="true"><div class="page-loader-bar"></div></div>
+
+<div id="app" class="app">
+  <main id="main">
+
+  <!-- ============ HOME ============ -->
+  <section id="page-home" class="page active" aria-labelledby="home-title">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </span>
+        <span class="brand-name">FasoDoc<span class="brand-dot" aria-hidden="true"></span></span>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn ripple" id="theme-toggle" type="button" aria-label="Activer le mode sombre" data-icon="moon"></button>
+        <button class="icon-btn ripple" id="notif-btn" type="button" aria-label="Notifications">
+          <span data-icon="bell"></span>
+          <span class="notif-badge" id="notif-badge" hidden>0</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="hero">
+      <p class="hero-eyebrow">Bonjour</p>
+      <h1 id="home-title" class="hero-title">Que veux-tu apprendre aujourd'hui ?</h1>
+      <button class="search-bar search-bar--hero ripple" type="button" data-goto="search" data-focus-search aria-label="Ouvrir la recherche">
+        <span data-icon="search" class="search-icon" aria-hidden="true"></span>
+        <span class="search-placeholder">Rechercher un document, une épreuve…</span>
+      </button>
+    </div>
+
+    <section class="section" aria-labelledby="cat-heading">
+      <div class="section-head">
+        <h2 id="cat-heading">Catégories</h2>
+        <button class="link-btn" type="button" data-goto="categories">Voir tout</button>
+      </div>
+      <div class="cat-grid" id="home-categories" aria-live="polite"></div>
+      <p class="empty-line" id="home-categories-empty" hidden>Aucune catégorie pour le moment. Reviens bientôt !</p>
+    </section>
+
+    <section class="section" aria-labelledby="popular-heading">
+      <div class="section-head">
+        <h2 id="popular-heading">Documents populaires</h2>
+        <button class="link-btn" type="button" data-goto="search" data-sort="popular">Voir tout</button>
+      </div>
+      <div class="doc-list" id="popular-docs" aria-live="polite"></div>
+      <p class="empty-line" id="popular-empty" hidden>Aucun document pour le moment.</p>
+    </section>
+
+    <section class="section" aria-labelledby="recent-heading">
+      <div class="section-head">
+        <h2 id="recent-heading">Derniers ajouts</h2>
+        <button class="link-btn" type="button" data-goto="search" data-sort="recent">Voir tout</button>
+      </div>
+      <div class="doc-list" id="recent-docs" aria-live="polite"></div>
+      <p class="empty-line" id="recent-empty" hidden>Aucun document pour le moment.</p>
+    </section>
+  </section>
+
+  <!-- ============ SEARCH ============ -->
+  <section id="page-search" class="page" aria-labelledby="search-title">
+    <header class="topbar topbar--sub">
+      <button class="icon-btn ripple back-btn" type="button" data-back aria-label="Retour" data-icon="arrow-left"></button>
+      <h1 id="search-title">Recherche</h1>
+      <span class="topbar-spacer" aria-hidden="true"></span>
+    </header>
+
+    <div class="search-bar search-bar--sticky">
+      <span data-icon="search" class="search-icon" aria-hidden="true"></span>
+      <label class="visually-hidden" for="search-input">Rechercher un document</label>
+      <input type="search" id="search-input" placeholder="Rechercher un document, une épreuve…" autocomplete="off">
+      <button class="search-clear ripple" id="search-clear" type="button" data-icon="x" aria-label="Effacer la recherche" hidden></button>
+    </div>
+
+    <div class="filters-row" id="filters-row" role="group" aria-label="Filtres de recherche">
+      <button class="filter-chip ripple" type="button" data-filter="category"><span data-icon="layers" aria-hidden="true"></span>Catégorie</button>
+      <button class="filter-chip ripple" type="button" data-filter="level"><span data-icon="bar-chart" aria-hidden="true"></span>Niveau</button>
+      <button class="filter-chip ripple" type="button" data-filter="subject"><span data-icon="book" aria-hidden="true"></span>Matière</button>
+      <button class="filter-chip ripple" type="button" data-filter="year"><span data-icon="calendar" aria-hidden="true"></span>Année</button>
+    </div>
+    <div class="active-filters" id="active-filters"></div>
+
+    <p class="results-count" id="results-count" aria-live="polite"></p>
+    <div class="doc-list" id="search-results"></div>
+    <div class="empty-state" id="search-empty" hidden>
+      <span data-icon="search" class="empty-icon" aria-hidden="true"></span>
+      <h3>Aucun résultat</h3>
+      <p>Essaie un autre mot-clé ou modifie tes filtres.</p>
+    </div>
+  </section>
+
+  <!-- ============ CATEGORIES ============ -->
+  <section id="page-categories" class="page" aria-labelledby="categories-title">
+    <header class="topbar topbar--sub">
+      <h1 id="categories-title">Catégories</h1>
+      <span class="topbar-spacer" aria-hidden="true"></span>
+    </header>
+    <div class="search-bar">
+      <span data-icon="search" class="search-icon" aria-hidden="true"></span>
+      <label class="visually-hidden" for="category-search">Rechercher une catégorie</label>
+      <input type="search" id="category-search" placeholder="Rechercher une catégorie…" autocomplete="off">
+    </div>
+    <div class="cat-grid cat-grid--full" id="all-categories" aria-live="polite"></div>
+    <div class="empty-state" id="categories-empty" hidden>
+      <span data-icon="layers" class="empty-icon" aria-hidden="true"></span>
+      <h3>Aucune catégorie</h3>
+      <p>Les catégories apparaîtront ici dès qu'elles seront ajoutées.</p>
+    </div>
+  </section>
+
+  <!-- ============ FAVORITES ============ -->
+  <section id="page-favorites" class="page" aria-labelledby="favorites-title">
+    <header class="topbar topbar--sub">
+      <h1 id="favorites-title">Favoris</h1>
+      <span class="topbar-spacer" aria-hidden="true"></span>
+    </header>
+    <div class="tabs" id="fav-tabs" role="tablist" aria-label="Filtrer les favoris"></div>
+    <div class="doc-list" id="favorites-list"></div>
+    <div class="empty-state" id="favorites-empty" hidden>
+      <span data-icon="heart" class="empty-icon" aria-hidden="true"></span>
+      <h3>Aucun favori encore</h3>
+      <p>Touche le cœur d'un document pour le retrouver ici plus tard.</p>
+      <button class="btn btn--primary ripple" type="button" data-goto="search">Explorer les documents</button>
+    </div>
+  </section>
+
+  <!-- ============ SUGGESTION ============ -->
+  <section id="page-suggest" class="page" aria-labelledby="suggest-title">
+    <header class="topbar topbar--sub">
+      <button class="icon-btn ripple back-btn" type="button" data-back aria-label="Retour" data-icon="arrow-left"></button>
+      <h1 id="suggest-title">Proposer un document</h1>
+      <span class="topbar-spacer" aria-hidden="true"></span>
+    </header>
+
+    <div class="suggest-intro">
+      <span class="suggest-illustration" data-icon="send" aria-hidden="true"></span>
+      <h2>Tu as une ressource utile ?</h2>
+      <p>Partage-la avec la communauté. Elle sera vérifiée avant publication.</p>
+    </div>
+
+    <form id="suggest-form" class="form" novalidate>
+      <p class="form-status" id="suggest-status" role="status" aria-live="polite"></p>
+      <label class="field">
+        <span class="field-label">Titre du document</span>
+        <input type="text" name="title" placeholder="Ex : Annales Physique-Chimie 2024" required>
+      </label>
+      <label class="field">
+        <span class="field-label">Description</span>
+        <textarea name="description" rows="3" placeholder="Décris brièvement le contenu du document" required></textarea>
+      </label>
+      <div class="field-row">
+        <label class="field">
+          <span class="field-label">Catégorie</span>
+          <select name="category" id="suggest-category" required>
+            <option value="">Choisir…</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="field-label">Niveau</span>
+          <select name="level" id="suggest-level" required></select>
+        </label>
+      </div>
+      <label class="field">
+        <span class="field-label">Matière</span>
+        <input type="text" name="subject" placeholder="Ex : Mathématiques" required>
+      </label>
+      <label class="field">
+        <span class="field-label">Lien du document</span>
+        <input type="url" name="link" placeholder="Lien MediaFire, Google Drive…" required>
+      </label>
+      <label class="field">
+        <span class="field-label">Message (optionnel)</span>
+        <textarea name="message" rows="2" placeholder="Une précision pour l'équipe FasoDoc ?"></textarea>
+      </label>
+      <button type="submit" class="btn btn--primary btn--block ripple" id="suggest-submit">
+        <span data-icon="send" aria-hidden="true"></span><span class="btn-label"> Envoyer la suggestion</span>
+      </button>
+    </form>
+  </section>
+
+  <!-- ============ PROFILE ============ -->
+  <section id="page-profile" class="page" aria-labelledby="profile-title">
+    <header class="topbar topbar--sub">
+      <h1 id="profile-title">Profil</h1>
+      <span class="topbar-spacer" aria-hidden="true"></span>
+    </header>
+
+    <div class="profile-card">
+      <div class="profile-avatar" data-icon="user" aria-hidden="true"></div>
+      <div>
+        <p class="profile-name">Visiteur</p>
+        <p class="profile-sub">Accès libre à toutes les ressources</p>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-icon" data-icon="eye" aria-hidden="true"></span>
+        <div>
+          <p class="stat-value" id="stat-views">0</p>
+          <p class="stat-label">Documents consultés</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon" data-icon="heart" aria-hidden="true"></span>
+        <div>
+          <p class="stat-value" id="stat-favs">0</p>
+          <p class="stat-label">Favoris enregistrés</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="group-title">Accessibilité</h2>
+    <div class="settings-card">
+      <div class="setting-row">
+        <div class="setting-text">
+          <p class="setting-title">Taille du texte</p>
+          <p class="setting-desc">Ajuste la taille pour une lecture plus confortable</p>
+        </div>
+      </div>
+      <div class="segmented" role="radiogroup" aria-label="Taille du texte" id="font-size-group">
+        <button type="button" class="segmented-btn" data-fontsize="normal" role="radio" aria-checked="true">A</button>
+        <button type="button" class="segmented-btn" data-fontsize="large" role="radio" aria-checked="false">A+</button>
+        <button type="button" class="segmented-btn" data-fontsize="xlarge" role="radio" aria-checked="false">A++</button>
+      </div>
+      <div class="setting-row setting-row--toggle">
+        <div class="setting-text">
+          <p class="setting-title">Mode sombre</p>
+          <p class="setting-desc">Confort visuel en faible lumière</p>
+        </div>
+        <button class="toggle ripple" id="theme-switch" type="button" role="switch" aria-checked="false" aria-label="Activer le mode sombre"><span class="toggle-knob"></span></button>
+      </div>
+    </div>
+
+    <h2 class="group-title">Communauté</h2>
+    <div class="menu-list">
+      <button class="menu-item ripple" type="button" data-goto="suggest">
+        <span class="menu-icon" data-icon="send" aria-hidden="true"></span>
+        <span class="menu-text">
+          <span class="menu-title">Proposer un document</span>
+          <span class="menu-desc">Partage une ressource avec la communauté</span>
+        </span>
+        <span class="menu-chevron" data-icon="chevron-right" aria-hidden="true"></span>
+      </button>
+      <button class="menu-item ripple" type="button" id="menu-clear-favs">
+        <span class="menu-icon" data-icon="trash" aria-hidden="true"></span>
+        <span class="menu-text">
+          <span class="menu-title">Vider les favoris</span>
+          <span class="menu-desc">Réinitialiser ta liste de favoris</span>
+        </span>
+        <span class="menu-chevron" data-icon="chevron-right" aria-hidden="true"></span>
+      </button>
+      <div class="menu-item menu-item--static">
+        <span class="menu-icon" data-icon="info" aria-hidden="true"></span>
+        <span class="menu-text">
+          <span class="menu-title">À propos de FasoDoc</span>
+          <span class="menu-desc">Bibliothèque numérique éducative · Burkina Faso · v1.0</span>
+        </span>
+      </div>
+    </div>
+
+    <p class="footnote">Fait avec ❤ pour les élèves du Burkina Faso</p>
+  </section>
+
+  <!-- ============ DOCUMENT DETAIL ============ -->
+  <section id="page-detail" class="page" aria-labelledby="detail-title">
+    <header class="topbar topbar--sub">
+      <button class="icon-btn ripple back-btn" type="button" data-back aria-label="Retour" data-icon="arrow-left"></button>
+      <h1 id="detail-title">Détails du document</h1>
+      <button class="icon-btn ripple" id="detail-share" type="button" aria-label="Partager" data-icon="share"></button>
+    </header>
+    <div id="detail-content"></div>
+  </section>
+
+  </main>
+
+  <!-- ============ BOTTOM NAV ============ -->
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Navigation principale">
+    <button class="nav-item ripple" type="button" data-goto="home" aria-current="page"><span data-icon="home" aria-hidden="true"></span><span>Accueil</span></button>
+    <button class="nav-item ripple" type="button" data-goto="search"><span data-icon="search" aria-hidden="true"></span><span>Recherche</span></button>
+    <button class="nav-item ripple" type="button" data-goto="categories"><span data-icon="grid" aria-hidden="true"></span><span>Catégories</span></button>
+    <button class="nav-item ripple" type="button" data-goto="favorites"><span data-icon="heart" aria-hidden="true"></span><span>Favoris</span></button>
+    <button class="nav-item ripple" type="button" data-goto="profile"><span data-icon="user" aria-hidden="true"></span><span>Profil</span></button>
+  </nav>
+</div>
+
+<!-- Filter sheet -->
+<div class="sheet-backdrop" id="sheet-backdrop"></div>
+<div class="sheet" id="filter-sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <div class="sheet-handle" aria-hidden="true"></div>
+  <div class="sheet-header">
+    <h3 id="sheet-title">Filtrer</h3>
+    <button class="icon-btn ripple" id="sheet-close" type="button" data-icon="x" aria-label="Fermer"></button>
+  </div>
+  <div class="sheet-options" id="sheet-options"></div>
+  <div class="sheet-actions">
+    <button class="btn btn--ghost ripple" type="button" id="sheet-reset">Réinitialiser</button>
+    <button class="btn btn--primary ripple" type="button" id="sheet-apply">Appliquer</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
